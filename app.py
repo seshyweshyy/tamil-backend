@@ -50,6 +50,36 @@ def chat():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
+@app.route('/translate-image', methods=['POST'])
+def translate_image():
+    data = request.json
+    image_data = data.get('image')      # base64 string
+    media_type = data.get('mediaType')  # e.g. 'image/jpeg'
+    
+    response = anthropic_client.messages.create(
+        model="claude-opus-4-5",
+        max_tokens=1000,
+        system="You are a Tamil translator. When given an image containing Tamil text, extract all Tamil text you can see and provide: 1) The original Tamil text, 2) The romanisation, 3) The English translation. Format clearly with labels.",
+        messages=[{
+            "role": "user",
+            "content": [
+                {
+                    "type": "image",
+                    "source": {
+                        "type": "base64",
+                        "media_type": media_type,
+                        "data": image_data
+                    }
+                },
+                {
+                    "type": "text",
+                    "text": "Please extract and translate all Tamil text in this image."
+                }
+            ]
+        }]
+    )
+    return jsonify({'reply': response.content[0].text})
+
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port)
