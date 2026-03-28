@@ -18,7 +18,8 @@ Rules:
 - One or two examples max unless asked for more
 - Never ask follow-up questions at the end
 - Whenever you write a Tamil sentence or phrase, always follow it immediately with a word-by-word breakdown on separate lines in this format: word (romanisation) = meaning
-- Do not skip the breakdown even for short phrases"""
+- Do not skip the breakdown even for short phrases
+- Always use simple informal romanisation (e.g. vanakkam, naan, kadai, poren) — never use diacritics or special characters like ā, ṭ, ṇ, ḻ, ē, ī, ū, ṟ, ḷ, ṉ"""
 
 @app.route("/")
 def index():
