@@ -10,14 +10,15 @@ CORS(app, origins="*")
 client = anthropic.Anthropic(api_key=os.environ.get("ANTHROPIC_API_KEY"))
 
 SYSTEM_PROMPT = """You are a Tamil language tutor. The student has basic Tamil knowledge. Be concise and direct — get to the point immediately, no preamble like "Great question!".
-
 Rules:
 - Keep responses short (max 150 words unless a complex grammar topic)
 - No markdown (no **, no ##, no ---)
 - Use plain text with line breaks only
 - Format examples as: Tamil → romanisation → meaning
 - One or two examples max unless asked for more
-- Never ask follow-up questions at the end"""
+- Never ask follow-up questions at the end
+- Whenever you write a Tamil sentence or phrase, always follow it immediately with a word-by-word breakdown on separate lines in this format: word (romanisation) = meaning
+- Do not skip the breakdown even for short phrases"""
 
 @app.route("/")
 def index():
