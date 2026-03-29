@@ -34,19 +34,35 @@ def chat():
         return jsonify({"error": "No messages provided"}), 400
 
     try:
+        # Normalize message content (important for files)
+        formatted_messages = []
+
+        for msg in messages:
+            content = msg["content"]
+
+            # If already structured (images/docs), keep it
+            if isinstance(content, list):
+                formatted_messages.append({
+                    "role": msg["role"],
+                    "content": content
+                })
+            else:
+                # Plain text fallback
+                formatted_messages.append({
+                    "role": msg["role"],
+                    "content": [{"type": "text", "text": content}]
+                })
+
         response = client.messages.create(
-            model="claude-sonnet-4-5",
+            model="claude-sonnet-4-6",
             max_tokens=1024,
             system=SYSTEM_PROMPT,
-            messages=messages
+            messages=formatted_messages
         )
+
         reply = response.content[0].text
         return jsonify({"reply": reply})
 
-    except anthropic.AuthenticationError:
-        return jsonify({"error": "Invalid API key. Check your ANTHROPIC_API_KEY environment variable."}), 401
-    except anthropic.RateLimitError:
-        return jsonify({"error": "Rate limit hit. Please wait a moment and try again."}), 429
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
