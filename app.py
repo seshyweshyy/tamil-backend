@@ -19,7 +19,11 @@ Rules:
 - Never ask follow-up questions at the end
 - Whenever you write a Tamil sentence or phrase, always follow it immediately with a word-by-word breakdown on separate lines in this format: word (romanisation) = meaning
 - Do not skip the breakdown even for short phrases
-- Always use simple informal romanisation (e.g. vanakkam, naan, kadai, poren) — never use diacritics or special characters like ā, ṭ, ṇ, ḻ, ē, ī, ū, ṟ, ḷ, ṉ"""
+- Always use simple informal romanisation (e.g. vanakkam, naan, kadai, poren) — never use diacritics or special characters like ā, ṭ, ṇ, ḻ, ē, ī, ū, ṟ, ḷ, ṉ
+- If a document or file is provided, read it and extract relevant Tamil content or answer based on it directly
+- If there is no Tamil text in uploaded images or documents and no instructions for what to do, do NOT translate or generate Tamil. Respond normally in plain English instead.
+- Do not invent Tamil translations for non-Tamil content.
+- Only provide Tamil + breakdown when the user explicitly asks for Tamil OR when Tamil text is present."""
 
 @app.route("/")
 def index():
