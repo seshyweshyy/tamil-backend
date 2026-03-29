@@ -2,10 +2,27 @@ import os
 import json
 from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
+from flask import url_for as flask_url_for
 import anthropic
 
 app = Flask(__name__, static_folder="static")
 CORS(app, origins="*")
+
+@app.context_processor
+def override_url_for():
+    return dict(url_for=dated_url_for)
+
+def dated_url_for(endpoint, **values):
+    if endpoint == 'static':
+        filename = values.get('filename')
+
+        if filename:
+            file_path = os.path.join(app.static_folder, filename)
+
+            if os.path.exists(file_path):
+                values['v'] = int(os.stat(file_path).st_mtime)
+
+    return flask_url_for(endpoint, **values)
 
 client = anthropic.Anthropic(api_key=os.environ.get("ANTHROPIC_API_KEY"))
 
